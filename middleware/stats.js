@@ -4,5 +4,5 @@ export default function ({ route }) {
   // return axios.post('http://my-stats-api.com', {
   //   url: route.fullPath
   // })
-  console.log("middle");
+  //console.log("middle");
 }

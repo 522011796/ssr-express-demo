@@ -13,6 +13,9 @@ module.exports = {
             {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
         ]
     },
+    env: {
+        baseUrl: 'http://1234'
+    },
     /*
     ** Global CSS
     */
@@ -49,6 +52,22 @@ module.exports = {
             }
         }
     },
+    axios: {
+        proxy: true
+    },
+    modules: [
+        '@nuxtjs/axios',
+        '@nuxtjs/proxy'
+    ],
+    proxy: [
+        [
+            '/proxy',
+            {
+                target: 'https://cnodejs.org/api/v1', // api主机
+                pathRewrite: { '^/proxy' : '/' }
+            }
+        ]
+    ],
     serverMiddleware: [
         // API middleware
         '~/api/index.js'

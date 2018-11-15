@@ -40,16 +40,25 @@
                 </Button>
             </div>
         </div>
+        api列表调用：
+        <div v-for="(item,index) in list" :key="index" style="width: 50%;margin: 0 auto;text-align: left">
+            <div v-html="item.title"></div>
+        </div>
     </section>
 </template>
 
 <script>
-    import axios from '~/plugins/axios'
     import Cookies from 'js-cookie'
     export default {
-        async asyncData() {
-            let {data} = await axios.get('/api/users')
-            return {users: data}
+        async asyncData(ctx) {
+            let [userList, topicList] = await Promise.all([
+                ctx.$axios.get('/api/users'),
+                ctx.$axios.get('/api/topicList')
+            ])
+            return {
+                users: userList.data,
+                list: topicList.data,
+            }
         },
         head() {
             return {
@@ -67,7 +76,15 @@
                 }
             }
         },
+        created(){
+            this.init();
+        },
         methods:{
+            init(){
+                this.$axios.get('/proxy/topics').then(res=>{
+                    //console.log(res.data.data);
+                });
+            },
             changeLocale(obj, lang) {
                 let locale = lang ? lang : Cookies.get('user_lang');
                 this.$i18n.locale = locale;
